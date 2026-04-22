@@ -1,0 +1,1611 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>DigiRepub · 大合</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Serif+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.42/bundled/lenis.min.js"></script>
+<style>
+  :root {
+    --cream: #F3EEE1;
+    --cream-soft: #EBE3CE;
+    --cream-deep: #E0D5B8;
+    --ink: #16110C;
+    --ink-soft: #2A231B;
+    --body: #3A3127;
+    --muted: #5A4F42;
+    --line: rgba(22, 17, 12, 0.16);
+    --line-strong: rgba(22, 17, 12, 0.35);
+    --coral: #C45A36;
+    --coral-deep: #9E4123;
+    --coral-bg: rgba(196, 90, 54, 0.08);
+    --scale: 1;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: auto; -webkit-text-size-adjust: 100%; }
+  body {
+    background: var(--cream);
+    color: var(--body);
+    font-family: 'Inter', 'Noto Serif SC', system-ui, sans-serif;
+    font-weight: 500;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+  img, svg { display: block; max-width: 100%; }
+  ::selection { background: var(--coral); color: var(--cream); }
+
+  .serif { font-family: 'Instrument Serif', 'Noto Serif SC', serif; font-weight: 400; }
+  .cn-serif { font-family: 'Noto Serif SC', serif; font-weight: 600; }
+  .mono { font-family: 'JetBrains Mono', monospace; font-weight: 500; }
+
+  .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  /* ══════ PROGRESS ══════ */
+  .progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    background: var(--coral);
+    width: 0%;
+    z-index: 200;
+  }
+
+  /* ══════ NAV ══════ */
+  nav.top {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(243, 238, 225, 0.85);
+    backdrop-filter: saturate(180%) blur(14px);
+    -webkit-backdrop-filter: saturate(180%) blur(14px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav.top .logo {
+    display: flex; align-items: center; gap: 12px;
+    color: var(--ink);
+  }
+  nav.top .logo svg { width: 32px; height: 22px; }
+  nav.top .wordmark {
+    font-family: 'Instrument Serif', serif;
+    font-size: 22px;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+  }
+  nav.top .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  /* ══════ LOGO ══════ */
+  .dr-logo circle.ring { fill: none; stroke: var(--ink); stroke-width: 1.2; vector-effect: non-scaling-stroke; }
+  .dr-logo circle.dot { fill: var(--coral); }
+
+  /* ══════ HERO ══════ */
+  .hero {
+    min-height: 100vh;
+    padding: 140px 32px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-art {
+    position: absolute;
+    top: 50%;
+    right: -8%;
+    transform: translateY(-50%);
+    width: 820px;
+    max-width: 80%;
+    opacity: 0.9;
+    pointer-events: none;
+  }
+  .hero-art circle, .hero-art ellipse { fill: none; stroke: var(--ink); stroke-width: 0.8; vector-effect: non-scaling-stroke; }
+  .hero-art .accent { stroke: var(--coral); stroke-width: 1.4; }
+  .hero-art .fill { fill: var(--coral); stroke: none; }
+  .hero-art .ink-fill { fill: var(--ink); stroke: none; opacity: 0.06; }
+
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 1080px;
+  }
+  .hero .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--coral-deep);
+    margin-bottom: 24px;
+    font-weight: 600;
+  }
+  .hero h1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(58px, 12vw, 180px);
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    font-weight: 400;
+    color: var(--ink);
+  }
+  .hero h1 .char { display: inline-block; }
+  .hero h1 .italic { font-style: italic; color: var(--coral-deep); }
+  .hero .cn {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(28px, 5vw, 56px);
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    margin-top: 28px;
+    color: var(--ink);
+  }
+  .hero .cn span { color: var(--coral-deep); }
+  .hero .tagline {
+    margin-top: 36px;
+    max-width: 680px;
+    font-size: clamp(17px, 1.8vw, 21px);
+    line-height: 1.7;
+    color: var(--ink-soft);
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 500;
+  }
+  .hero .meta-row {
+    position: absolute;
+    bottom: 32px;
+    left: 32px;
+    right: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  /* ══════ SECTION generic ══════ */
+  section { padding: 120px 32px; position: relative; }
+  .container { max-width: 1280px; margin: 0 auto; }
+  .container-narrow { max-width: 960px; margin: 0 auto; }
+
+  .section-head {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 48px;
+    margin-bottom: 72px;
+    align-items: baseline;
+  }
+  .section-head .num {
+    font-family: 'Instrument Serif', serif;
+    font-size: 72px;
+    line-height: 1;
+    font-style: italic;
+    color: var(--coral-deep);
+    font-weight: 400;
+  }
+  .section-head .num small {
+    display: block;
+    font-style: normal;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    color: var(--muted);
+    margin-top: 14px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .section-head h2 {
+    font-family: 'Instrument Serif', 'Noto Serif SC', serif;
+    font-size: clamp(38px, 5.4vw, 80px);
+    line-height: 1;
+    letter-spacing: -0.015em;
+    font-weight: 400;
+    color: var(--ink);
+  }
+  .section-head h2 em {
+    font-style: italic;
+    color: var(--coral-deep);
+    font-weight: 400;
+  }
+  .section-head .eyebrow {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(16px, 1.4vw, 19px);
+    line-height: 1.75;
+    color: var(--ink-soft);
+    max-width: 640px;
+    margin-top: 24px;
+    font-weight: 500;
+  }
+
+  /* ══════ MANIFESTO ══════ */
+  .manifesto {
+    padding: 140px 32px;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+  .manifesto::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 520px;
+    height: 520px;
+    max-width: 80%;
+    max-height: 80%;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    opacity: 0.5;
+  }
+  .manifesto p {
+    font-family: 'Instrument Serif', 'Noto Serif SC', serif;
+    font-size: clamp(30px, 4.2vw, 60px);
+    line-height: 1.22;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    max-width: 1120px;
+    color: var(--ink);
+    position: relative;
+    z-index: 2;
+  }
+  .manifesto p em { font-style: italic; color: var(--coral-deep); }
+  .manifesto .word {
+    display: inline-block;
+    opacity: 0.18;
+    transition: opacity .5s ease;
+  }
+  .manifesto .word.lit { opacity: 1; }
+
+  /* ══════ IDENTITIES ══════ */
+  .identities { display: grid; gap: 0; }
+  .identity {
+    display: grid;
+    grid-template-columns: 96px 180px 1fr 1.3fr;
+    gap: 40px;
+    padding: 56px 0;
+    border-top: 1px solid var(--line);
+    align-items: center;
+  }
+  .identity:last-child { border-bottom: 1px solid var(--line); }
+  .identity .idx {
+    font-family: 'Instrument Serif', serif;
+    font-size: 64px;
+    line-height: 1;
+    font-style: italic;
+    color: var(--ink);
+  }
+  .identity .art {
+    width: 140px;
+    height: 140px;
+  }
+  .identity .art circle, .identity .art line, .identity .art path { fill: none; stroke: var(--ink); stroke-width: 1.2; vector-effect: non-scaling-stroke; }
+  .identity .art .fill { fill: var(--coral); stroke: none; }
+  .identity h3 {
+    font-family: 'Instrument Serif', 'Noto Serif SC', serif;
+    font-size: clamp(28px, 3vw, 40px);
+    line-height: 1.1;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .identity h3 .en {
+    display: block;
+    font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.28em;
+    color: var(--coral-deep);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    font-weight: 600;
+  }
+  .identity p {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(15px, 1.3vw, 17px);
+    line-height: 1.85;
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+
+  /* ══════ ARCHITECTURE ══════ */
+  .arch-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 56px;
+  }
+  .arch-visual svg { width: 100%; max-width: 680px; }
+  .arch-visual circle { fill: none; stroke: var(--ink); stroke-width: 1; vector-effect: non-scaling-stroke; }
+  .arch-visual .accent { fill: var(--coral); stroke: none; opacity: 0.18; }
+  .arch-visual .lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    fill: var(--ink);
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .arch-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--line-strong);
+    border: 1px solid var(--line-strong);
+  }
+  .arch-col {
+    background: var(--cream);
+    padding: 56px 40px;
+  }
+  .arch-col .mark {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--coral-deep);
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+  .arch-col h3 {
+    font-family: 'Instrument Serif', 'Noto Serif SC', serif;
+    font-size: clamp(30px, 3.2vw, 42px);
+    line-height: 1.1;
+    margin-bottom: 32px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .arch-col h3 small {
+    display: block;
+    font-family: 'Noto Serif SC', serif;
+    font-size: 17px;
+    color: var(--ink-soft);
+    margin-top: 10px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  .arch-col .item {
+    padding: 16px 0;
+    border-top: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 16px;
+    font-size: 16px;
+    color: var(--ink);
+  }
+  .arch-col .item .k {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-top: 4px;
+    font-weight: 600;
+  }
+  .arch-col .item .v {
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.6;
+  }
+
+  .case {
+    border-left: 3px solid var(--coral);
+    padding: 24px 28px;
+    margin-top: 40px;
+    background: var(--coral-bg);
+  }
+  .case .cap {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--coral-deep);
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .case .title {
+    font-family: 'Instrument Serif', 'Noto Serif SC', serif;
+    font-size: clamp(20px, 2.2vw, 26px);
+    line-height: 1.3;
+    margin-bottom: 12px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .case .body {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(15px, 1.3vw, 17px);
+    line-height: 1.8;
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+  .case .body .hi {
+    color: var(--coral-deep);
+    font-weight: 700;
+  }
+
+  /* ══════ PRODUCT GRID (mobile-first, optional pin on desktop) ══════ */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  .product-card {
+    background: var(--cream);
+    border: 1px solid var(--line);
+    padding: 32px;
+    position: relative;
+    transition: transform .5s ease, border-color .4s ease, background .4s ease;
+  }
+  .product-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--coral);
+    background: var(--cream-soft);
+  }
+  .product-card .art {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background: var(--cream-soft);
+    border: 1px solid var(--line);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .product-card .art svg { width: 76%; height: 76%; }
+  .product-card .art circle, .product-card .art line, .product-card .art path, .product-card .art rect, .product-card .art polygon {
+    fill: none; stroke: var(--ink); stroke-width: 1.2; vector-effect: non-scaling-stroke;
+  }
+  .product-card .art .fill { fill: var(--coral); stroke: none; }
+  .product-card .art .soft { stroke: var(--muted); stroke-width: 0.8; }
+  .product-card .pidx {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--coral-deep);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .product-card h3 {
+    font-family: 'Instrument Serif', 'Noto Serif SC', serif;
+    font-size: clamp(24px, 2.6vw, 34px);
+    line-height: 1.1;
+    color: var(--ink);
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+  .product-card .code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+  .product-card .desc {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(14px, 1.2vw, 16px);
+    line-height: 1.75;
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+
+  /* ══════ PATHWAY ══════ */
+  .pathway-visual {
+    margin: 60px 0 40px;
+  }
+  .pathway-visual svg { width: 100%; height: auto; overflow: visible; }
+  .pathway-visual .path-line {
+    fill: none;
+    stroke: var(--coral);
+    stroke-width: 1.5;
+    stroke-dasharray: 4 4;
+    vector-effect: non-scaling-stroke;
+  }
+  .pathway-visual circle.node { fill: var(--cream); stroke: var(--ink); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+  .pathway-visual circle.node.filled { fill: var(--coral); stroke: var(--coral); }
+  .pathway-visual text {
+    font-family: 'Instrument Serif', serif;
+    font-size: 20px;
+    font-style: italic;
+    fill: var(--ink);
+    text-anchor: middle;
+    font-weight: 400;
+  }
+  .pathway-visual text.filled { fill: var(--cream); }
+  .pathway-visual text.label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    fill: var(--muted);
+    font-weight: 600;
+    font-style: normal;
+  }
+  .pathway-visual text.title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    fill: var(--ink);
+  }
+
+  .pathway-desc {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    margin-top: 24px;
+  }
+  .pathway-desc p {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+
+  /* ══════ ECOSYSTEM ══════ */
+  .eco-map {
+    margin: 40px 0;
+    position: relative;
+  }
+  .eco-map svg { width: 100%; height: auto; }
+  .eco-map line { stroke: var(--coral); stroke-width: 1; stroke-dasharray: 3 4; vector-effect: non-scaling-stroke; }
+  .eco-map circle.eco-dot { fill: var(--coral); stroke: none; }
+  .eco-map circle.eco-center { fill: var(--cream); stroke: var(--coral); stroke-width: 2.5; vector-effect: non-scaling-stroke; }
+  .eco-map text {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 13px;
+    fill: var(--ink);
+    text-anchor: middle;
+    font-weight: 600;
+  }
+  .eco-map text.sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    fill: var(--muted);
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .eco-map text.center {
+    font-family: 'Instrument Serif', serif;
+    font-size: 22px;
+    font-style: italic;
+    fill: var(--coral-deep);
+    font-weight: 500;
+  }
+
+  /* ══════ PILLARS ══════ */
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--line-strong);
+    border-top: 1px solid var(--line-strong);
+    border-bottom: 1px solid var(--line-strong);
+  }
+  .pillar {
+    background: var(--cream);
+    padding: 64px 36px;
+    text-align: center;
+  }
+  .pillar .glyph {
+    width: 140px;
+    height: 140px;
+    margin: 0 auto 32px;
+  }
+  .pillar .glyph circle, .pillar .glyph line, .pillar .glyph path { fill: none; stroke: var(--ink); stroke-width: 1.2; vector-effect: non-scaling-stroke; }
+  .pillar .glyph .fill { fill: var(--coral); stroke: none; }
+  .pillar h4 {
+    font-family: 'Instrument Serif', 'Noto Serif SC', serif;
+    font-size: clamp(24px, 2.4vw, 30px);
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 18px;
+  }
+  .pillar p {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--ink-soft);
+    font-weight: 500;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  /* ══════ DELIVERY TABLE ══════ */
+  table.editorial {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 32px;
+  }
+  table.editorial th, table.editorial td {
+    text-align: left;
+    padding: 22px 24px;
+    border-bottom: 1px solid var(--line);
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(14px, 1.2vw, 16px);
+    line-height: 1.65;
+    font-weight: 500;
+    vertical-align: top;
+    color: var(--ink-soft);
+  }
+  table.editorial th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    border-top: 2px solid var(--ink);
+    border-bottom: 1px solid var(--line-strong);
+    padding: 18px 24px;
+  }
+  table.editorial td:first-child { font-weight: 600; color: var(--ink); }
+  table.editorial td:last-child {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--coral-deep);
+    font-weight: 600;
+  }
+
+  /* ══════ CLOSING ══════ */
+  .closing {
+    padding: 180px 32px 100px;
+    text-align: center;
+    border-top: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+  }
+  .closing .cap {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 48px;
+    font-weight: 600;
+  }
+  .closing h2 {
+    font-family: 'Instrument Serif', 'Noto Serif SC', serif;
+    font-size: clamp(48px, 7.5vw, 120px);
+    line-height: 1;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .closing h2 em {
+    font-style: italic;
+    color: var(--coral-deep);
+  }
+  .closing-logo {
+    width: 200px;
+    height: 140px;
+    margin: 60px auto 0;
+  }
+  .closing-logo circle.ring { fill: none; stroke: var(--ink); stroke-width: 1; vector-effect: non-scaling-stroke; }
+  .closing-logo circle.dot { fill: var(--coral); }
+  .closing .sig {
+    margin-top: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  /* ══════ MOBILE ══════ */
+  @media (max-width: 900px) {
+    nav.top { padding: 14px 18px; }
+    nav.top .meta { display: none; }
+    nav.top .wordmark { font-size: 19px; }
+
+    .hero {
+      padding: 110px 20px 140px;
+      min-height: auto;
+    }
+    .hero-art {
+      position: relative;
+      width: 280px;
+      max-width: 60%;
+      right: auto;
+      top: auto;
+      transform: none;
+      margin: 0 0 32px auto;
+      opacity: 0.85;
+    }
+    .hero-inner { width: 100%; }
+    .hero h1 { font-size: clamp(54px, 14vw, 88px); }
+    .hero .cn { font-size: clamp(26px, 6.5vw, 36px); letter-spacing: 0.12em; }
+    .hero .tagline { font-size: 16px; line-height: 1.75; }
+    .hero .meta-row {
+      position: static;
+      margin-top: 48px;
+      flex-direction: column;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+    }
+
+    section { padding: 80px 20px; }
+    .section-head {
+      grid-template-columns: 1fr;
+      gap: 20px;
+      margin-bottom: 48px;
+    }
+    .section-head .num { font-size: 56px; }
+    .section-head h2 { font-size: clamp(32px, 8vw, 48px); }
+
+    .manifesto { padding: 80px 20px; }
+    .manifesto::before { width: 360px; height: 360px; }
+    .manifesto p { font-size: clamp(22px, 6.5vw, 32px); line-height: 1.28; }
+
+    .identity {
+      grid-template-columns: 64px 1fr;
+      gap: 16px;
+      padding: 36px 0;
+      row-gap: 20px;
+    }
+    .identity .idx { font-size: 40px; grid-row: 1; }
+    .identity .art { width: 64px; height: 64px; grid-row: 1; grid-column: 2; justify-self: end; }
+    .identity h3 { grid-column: 1 / -1; font-size: 26px; }
+    .identity p { grid-column: 1 / -1; font-size: 15px; }
+
+    .arch-visual svg { max-width: 100%; }
+    .arch-grid { grid-template-columns: 1fr; }
+    .arch-col { padding: 36px 24px; }
+    .arch-col h3 { font-size: 26px; }
+    .arch-col h3 small { font-size: 15px; }
+    .arch-col .item { grid-template-columns: 70px 1fr; gap: 12px; font-size: 14px; }
+    .arch-col .item .k { font-size: 10px; }
+
+    .product-grid { grid-template-columns: 1fr; gap: 20px; }
+    .product-card { padding: 24px; }
+    .product-card h3 { font-size: 24px; }
+    .product-card .desc { font-size: 14px; }
+
+    .pathway-desc { grid-template-columns: 1fr; gap: 24px; }
+
+    .pillars { grid-template-columns: 1fr; }
+    .pillar { padding: 48px 28px; }
+    .pillar .glyph { width: 100px; height: 100px; margin-bottom: 24px; }
+    .pillar h4 { font-size: 22px; }
+
+    table.editorial { display: block; }
+    table.editorial thead { display: none; }
+    table.editorial tbody, table.editorial tr, table.editorial td { display: block; width: 100%; }
+    table.editorial tr {
+      border-top: 1px solid var(--line);
+      padding: 16px 0;
+    }
+    table.editorial td {
+      border: none;
+      padding: 4px 0;
+      font-size: 15px;
+    }
+    table.editorial td:first-child { font-size: 18px; margin-bottom: 4px; }
+    table.editorial td:last-child { color: var(--coral-deep); font-size: 11px; letter-spacing: 0.15em; }
+
+    .case { padding: 20px 22px; }
+    .case .title { font-size: 18px; }
+
+    .closing { padding: 100px 20px 80px; }
+    .closing h2 { font-size: clamp(40px, 11vw, 72px); }
+  }
+
+  @media (max-width: 420px) {
+    .hero h1 { font-size: 58px; }
+    .section-head h2 { font-size: 32px; }
+    .product-card .art { aspect-ratio: 3 / 2; }
+  }
+
+  /* ══════ REVEAL base ══════ */
+  .reveal { opacity: 0; transform: translateY(32px); }
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<!-- ══════ NAV ══════ -->
+<nav class="top">
+  <div class="logo">
+    <svg viewBox="0 0 52 30" xmlns="http://www.w3.org/2000/svg" class="dr-logo">
+      <circle class="ring" cx="17" cy="15" r="13"/>
+      <circle class="ring" cx="34" cy="15" r="13"/>
+      <circle class="dot" cx="25.5" cy="15" r="1.8"/>
+    </svg>
+    <span class="wordmark">DigiRepub</span>
+  </div>
+  <div class="meta">A / Showcase · MMXXVI</div>
+</nav>
+
+<!-- ══════ HERO ══════ -->
+<section class="hero">
+  <!-- Hero artistic composition: concentric spheres + vesica piscis motif -->
+  <svg class="hero-art" viewBox="0 0 800 700" xmlns="http://www.w3.org/2000/svg" id="heroArt" aria-hidden="true">
+    <g id="hero-orbits">
+      <circle cx="400" cy="350" r="340"/>
+      <circle cx="400" cy="350" r="280"/>
+      <circle cx="400" cy="350" r="220"/>
+      <circle cx="400" cy="350" r="160"/>
+    </g>
+    <!-- Vesica piscis -->
+    <g id="hero-vesica">
+      <circle class="accent" cx="330" cy="350" r="140"/>
+      <circle class="accent" cx="470" cy="350" r="140"/>
+      <circle class="fill" cx="400" cy="350" r="4"/>
+    </g>
+    <!-- Tick marks around the outermost orbit -->
+    <g id="hero-ticks" stroke="#16110C" stroke-width="0.6">
+      <line x1="400" y1="10" x2="400" y2="30"/>
+      <line x1="400" y1="670" x2="400" y2="690"/>
+      <line x1="60" y1="350" x2="80" y2="350"/>
+      <line x1="720" y1="350" x2="740" y2="350"/>
+      <line x1="645" y1="105" x2="660" y2="120"/>
+      <line x1="155" y1="595" x2="140" y2="580"/>
+      <line x1="155" y1="105" x2="140" y2="120"/>
+      <line x1="645" y1="595" x2="660" y2="580"/>
+    </g>
+    <!-- orbital dots -->
+    <circle class="fill" cx="400" cy="10" r="4"/>
+    <circle class="fill" cx="740" cy="350" r="3"/>
+  </svg>
+
+  <div class="hero-inner">
+    <div class="eyebrow">DigiRepub · 大合 — A Visual Index · MMXXVI</div>
+    <h1 id="heroTitle"><span class="char">D</span><span class="char">i</span><span class="char">g</span><span class="char">i</span><span class="char">R</span><span class="char">e</span><span class="char">p</span><span class="char">u</span><span class="char italic">b</span><span class="char italic">.</span></h1>
+    <div class="cn">大合 — <span>大道至合</span></div>
+    <p class="tagline">AI 时代的咨询不是售卖工具，而是让每一次投入精准、可控、可持续。我们以自研产品为底，以业务理解为尺，以生态资源为网——连接企业的真实问题与 AI 世界的全部答案。</p>
+  </div>
+
+  <div class="meta-row">
+    <div>Scroll to unfold ↓</div>
+    <div>Chapter i — Prologue</div>
+  </div>
+</section>
+
+<!-- ══════ MANIFESTO ══════ -->
+<section class="manifesto">
+  <div class="container">
+    <p id="manifesto">
+      <span class="word">我们</span> <span class="word">不是</span> <span class="word">又一家</span> <span class="word">AI</span> <span class="word">公司。</span>
+      <span class="word">我们是</span> <span class="word"><em>企业</em></span> <span class="word">与</span> <span class="word"><em>AI 世界</em></span>
+      <span class="word">之间的</span> <span class="word">那根</span> <span class="word">线 —</span>
+      <span class="word">懂业务</span>，<span class="word">通工具</span>，<span class="word">连生态。</span>
+    </p>
+  </div>
+</section>
+
+<!-- ══════ 01 POSITIONING ══════ -->
+<section id="positioning">
+  <div class="container">
+    <div class="section-head">
+      <div class="num">01<small>Strategic Positioning</small></div>
+      <div>
+        <h2>三重身份，<br>一种<em>信念</em>。</h2>
+        <p class="eyebrow">DigiRepub 不是单一角色——我们同时是 AI 产品的创造者、企业业务的咨询师、AI 生态的连接者。三者互相成就，缺一不可。</p>
+      </div>
+    </div>
+
+    <div class="identities">
+      <div class="identity reveal">
+        <div class="idx">i</div>
+        <svg class="art" viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="35" cy="50" r="28"/>
+          <circle cx="65" cy="50" r="28"/>
+          <circle class="fill" cx="50" cy="50" r="2.4"/>
+          <circle cx="50" cy="50" r="42"/>
+        </svg>
+        <h3><span class="en">Maker</span>AI 产品<br>研发者</h3>
+        <p>自研 8 条 DR 系列产品线——从图像生成、视频生成到主数据治理、工作流介入——每一件都是经真实客户打磨的资产，而非 PPT 上的概念。</p>
+      </div>
+
+      <div class="identity reveal">
+        <div class="idx">ii</div>
+        <svg class="art" viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="36"/>
+          <path d="M 20 50 L 80 50"/>
+          <path d="M 50 20 L 50 80"/>
+          <circle class="fill" cx="50" cy="50" r="3"/>
+          <circle cx="50" cy="20" r="3" fill="none"/>
+          <circle cx="50" cy="80" r="3" fill="none"/>
+          <circle cx="20" cy="50" r="3" fill="none"/>
+          <circle cx="80" cy="50" r="3" fill="none"/>
+        </svg>
+        <h3><span class="en">Advisor</span>业务<br>咨询师</h3>
+        <p>从业务流程与痛点出发，反向推导 AI 的介入点。工具永远是手段，企业的问题才是起点——这是 DigiRepub 与"卖 AI 工具的人"的根本区别。</p>
+      </div>
+
+      <div class="identity reveal">
+        <div class="idx">iii</div>
+        <svg class="art" viewBox="0 0 100 100" aria-hidden="true">
+          <circle class="fill" cx="50" cy="50" r="3"/>
+          <circle cx="50" cy="20" r="4"/>
+          <circle cx="78" cy="36" r="4"/>
+          <circle cx="78" cy="64" r="4"/>
+          <circle cx="50" cy="80" r="4"/>
+          <circle cx="22" cy="64" r="4"/>
+          <circle cx="22" cy="36" r="4"/>
+          <line x1="50" y1="50" x2="50" y2="20"/>
+          <line x1="50" y1="50" x2="78" y2="36"/>
+          <line x1="50" y1="50" x2="78" y2="64"/>
+          <line x1="50" y1="50" x2="50" y2="80"/>
+          <line x1="50" y1="50" x2="22" y2="64"/>
+          <line x1="50" y1="50" x2="22" y2="36"/>
+        </svg>
+        <h3><span class="en">Connector</span>生态<br>连接者</h3>
+        <p>熟悉通义千问、字节豆包、腾讯混元等大厂模型，也深入各类商用小模型与开源微调模型——为客户匹配"最合适"而非"最知名"的方案。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ 02 ARCHITECTURE ══════ -->
+<section id="architecture" style="background: var(--cream-soft);">
+  <div class="container">
+    <div class="section-head">
+      <div class="num">02<small>Business Architecture</small></div>
+      <div>
+        <h2>两层<em>结构</em>，<br>一张网。</h2>
+        <p class="eyebrow">DigiRepub 的咨询围绕企业两类关键人群展开，形成相互联动的双层业务模型。底层赋能员工，顶层规划战略，纵向贯通。</p>
+      </div>
+    </div>
+
+    <!-- Architecture visual: two overlapping circles like logo, at scale -->
+    <div class="arch-visual reveal">
+      <svg viewBox="0 0 680 360" xmlns="http://www.w3.org/2000/svg" id="archVisual">
+        <circle class="accent" cx="240" cy="180" r="140"/>
+        <circle cx="240" cy="180" r="140"/>
+        <circle class="accent" cx="440" cy="180" r="140"/>
+        <circle cx="440" cy="180" r="140"/>
+        <text class="lbl" x="160" y="60">Layer 01 · Foundation</text>
+        <text class="lbl" x="400" y="60">Layer 02 · Strategy</text>
+        <text class="lbl" x="160" y="310">员工赋能</text>
+        <text class="lbl" x="400" y="310">中高层咨询</text>
+        <text class="lbl" x="310" y="185" text-anchor="middle" fill="#C45A36">联动</text>
+        <circle cx="340" cy="180" r="4" fill="#C45A36"/>
+      </svg>
+    </div>
+
+    <div class="arch-grid">
+      <div class="arch-col reveal">
+        <div class="mark">Layer 01 — Foundation</div>
+        <h3>基础层<small>员工 · AI 能力赋能</small></h3>
+        <div class="item"><div class="k">Who</div><div class="v">企业一线员工 · 执行层</div></div>
+        <div class="item"><div class="k">Goal</div><div class="v">提升员工 AI 使用能力，解决日常工作效率问题</div></div>
+        <div class="item"><div class="k">Form</div><div class="v">工具培训 · 场景化实操 · 工作坊</div></div>
+        <div class="item"><div class="k">Lever</div><div class="v">DRart · DRvideo · 数据整理 · 报告生成</div></div>
+        <div class="item"><div class="k">Value</div><div class="v">即时生产力提升，可感知的工作改善</div></div>
+
+        <div class="case">
+          <div class="cap">Case · 基础层实践</div>
+          <div class="title">DRart × DRvideo 培训工作坊</div>
+          <div class="body">DRart 在风格一致性与品牌素材可控性上超越市面同类工具。设计团队 <span class="hi">2 小时</span> 掌握完整工作流，运营团队在 DRvideo 上直接产出品牌短视频初稿——把"培训"落到真实可用的产出。</div>
+        </div>
+      </div>
+
+      <div class="arch-col reveal">
+        <div class="mark">Layer 02 — Strategy</div>
+        <h3>战略层<small>中高层 · 业务咨询</small></h3>
+        <div class="item"><div class="k">Who</div><div class="v">创始人 · CEO · 部门负责人</div></div>
+        <div class="item"><div class="k">Goal</div><div class="v">避免盲目投资 AI，先诊断业务再匹配方案</div></div>
+        <div class="item"><div class="k">Form</div><div class="v">业务诊断 · AI 战略规划 · 方案选型顾问</div></div>
+        <div class="item"><div class="k">Lever</div><div class="v">DR Context · DR Forge · DR Nexus · DR Bridge</div></div>
+        <div class="item"><div class="k">Value</div><div class="v">精准的 AI 投资决策，长期业务竞争力</div></div>
+
+        <div class="case">
+          <div class="cap">Case · 战略层实践</div>
+          <div class="title">DR Forge 重塑制造企业生产流程</div>
+          <div class="body">客户原本打算采购三套 AI 工具。DigiRepub 两周完成诊断，发现瓶颈在跨部门协同。以 DR Forge 为主干 + 开源小模型承担文本分类——<span class="hi">节省约 60% 预算</span>，<span class="hi">6 周内</span>首批流程上线。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ 03 PRODUCTS ══════ -->
+<section id="products">
+  <div class="container">
+    <div class="section-head">
+      <div class="num">03<small>Product Matrix</small></div>
+      <div>
+        <h2>八件<em>作品</em>，<br>一套语言。</h2>
+        <p class="eyebrow">DigiRepub 的咨询能力由真实的产品研发能力背书。每一件 DR 系列产品都经过真实客户打磨，既是商业化资产，也是咨询交付的可组合模块。</p>
+      </div>
+    </div>
+
+    <div class="product-grid">
+
+      <!-- DRart -->
+      <div class="product-card reveal">
+        <div class="art">
+          <svg viewBox="0 0 120 90">
+            <circle cx="40" cy="45" r="28"/>
+            <circle cx="70" cy="45" r="28"/>
+            <circle cx="85" cy="30" r="10" class="soft"/>
+            <circle cx="25" cy="60" r="8" class="soft"/>
+            <circle class="fill" cx="55" cy="45" r="3"/>
+            <line x1="10" y1="80" x2="110" y2="80" class="soft"/>
+          </svg>
+        </div>
+        <div class="pidx">01 / VIII</div>
+        <h3>DRart</h3>
+        <div class="code">Image Generation</div>
+        <div class="desc">风格可控、品牌一致性超越市面同类工具。服务品牌视觉、电商素材、营销物料——把"AI 绘画"从玩具变为可量产的品牌资产。</div>
+      </div>
+
+      <!-- DRvideo -->
+      <div class="product-card reveal">
+        <div class="art">
+          <svg viewBox="0 0 120 90">
+            <rect x="12" y="22" width="96" height="46" rx="2"/>
+            <rect x="12" y="14" width="14" height="8" class="soft"/>
+            <rect x="94" y="14" width="14" height="8" class="soft"/>
+            <rect x="12" y="68" width="14" height="8" class="soft"/>
+            <rect x="94" y="68" width="14" height="8" class="soft"/>
+            <polygon points="50,32 50,58 72,45" class="fill"/>
+          </svg>
+        </div>
+        <div class="pidx">02 / VIII</div>
+        <h3>DRvideo</h3>
+        <div class="code">Video Generation</div>
+        <div class="desc">面向短视频、品牌宣传片、产品演示的 AI 视频生成系统，支持基于品牌素材的风格化生成。从单图到成片，连贯统一的视觉语言。</div>
+      </div>
+
+      <!-- DR Context -->
+      <div class="product-card reveal">
+        <div class="art">
+          <svg viewBox="0 0 120 90">
+            <circle cx="60" cy="45" r="34"/>
+            <circle cx="60" cy="45" r="24"/>
+            <circle cx="60" cy="45" r="14"/>
+            <circle class="fill" cx="60" cy="45" r="4"/>
+            <line x1="60" y1="5" x2="60" y2="15" class="soft"/>
+            <line x1="60" y1="75" x2="60" y2="85" class="soft"/>
+            <line x1="20" y1="45" x2="26" y2="45" class="soft"/>
+            <line x1="94" y1="45" x2="100" y2="45" class="soft"/>
+          </svg>
+        </div>
+        <div class="pidx">03 / VIII</div>
+        <h3>DR Context</h3>
+        <div class="code">Brand Context</div>
+        <div class="desc">基于完整品牌资料、属性与调性为品牌方定制专属 AI Context。让任何 AI 产出天然契合品牌个性，而非千篇一律的通用输出。</div>
+      </div>
+
+      <!-- DR Viral -->
+      <div class="product-card reveal">
+        <div class="art">
+          <svg viewBox="0 0 120 90">
+            <circle class="fill" cx="60" cy="45" r="5"/>
+            <circle cx="60" cy="45" r="14"/>
+            <circle cx="60" cy="45" r="26" class="soft"/>
+            <circle cx="60" cy="45" r="38" class="soft"/>
+            <line x1="60" y1="10" x2="60" y2="18"/>
+            <line x1="85" y1="20" x2="90" y2="25"/>
+            <line x1="35" y1="20" x2="30" y2="25"/>
+            <line x1="60" y1="72" x2="60" y2="80"/>
+          </svg>
+        </div>
+        <div class="pidx">04 / VIII</div>
+        <h3>DR Viral</h3>
+        <div class="code">Chinese Social Content</div>
+        <div class="desc">针对中国社交媒体生态（小红书、抖音、微博、视频号）特性定制的内容生成系统。文案、标题、话题、封面一体化产出。</div>
+      </div>
+
+      <!-- DR Bridge -->
+      <div class="product-card reveal">
+        <div class="art">
+          <svg viewBox="0 0 120 90">
+            <circle cx="25" cy="45" r="14"/>
+            <circle cx="95" cy="45" r="14"/>
+            <path d="M 25 45 Q 60 10 95 45" fill="none"/>
+            <path d="M 25 45 Q 60 80 95 45" fill="none" class="soft"/>
+            <circle class="fill" cx="60" cy="45" r="3"/>
+          </svg>
+        </div>
+        <div class="pidx">05 / VIII</div>
+        <h3>DR Bridge</h3>
+        <div class="code">Multilingual Meetings</div>
+        <div class="desc">多语种会议的实时文字翻译系统，支持发言留痕、术语库定制与会议纪要自动生成。让语言不再是跨国团队的协同成本。</div>
+      </div>
+
+      <!-- DR Nexus -->
+      <div class="product-card reveal">
+        <div class="art">
+          <svg viewBox="0 0 120 90">
+            <circle class="fill" cx="60" cy="45" r="4"/>
+            <circle cx="25" cy="25" r="4"/>
+            <circle cx="95" cy="25" r="4"/>
+            <circle cx="25" cy="65" r="4"/>
+            <circle cx="95" cy="65" r="4"/>
+            <circle cx="60" cy="15" r="3"/>
+            <circle cx="60" cy="75" r="3"/>
+            <line x1="60" y1="45" x2="25" y2="25"/>
+            <line x1="60" y1="45" x2="95" y2="25"/>
+            <line x1="60" y1="45" x2="25" y2="65"/>
+            <line x1="60" y1="45" x2="95" y2="65"/>
+            <line x1="60" y1="45" x2="60" y2="15"/>
+            <line x1="60" y1="45" x2="60" y2="75"/>
+          </svg>
+        </div>
+        <div class="pidx">06 / VIII</div>
+        <h3>DR Nexus</h3>
+        <div class="code">Master Data Hub</div>
+        <div class="desc">AI 时代的 Master Data 智能治理系统。把散落在邮件、文档、聊天中的结构化信息归集、清洗、入库——让数据资产真正流动起来。</div>
+      </div>
+
+      <!-- DR Forge -->
+      <div class="product-card reveal">
+        <div class="art">
+          <svg viewBox="0 0 120 90">
+            <rect x="10" y="38" width="20" height="14"/>
+            <rect x="50" y="38" width="20" height="14"/>
+            <rect x="90" y="38" width="20" height="14"/>
+            <line x1="30" y1="45" x2="50" y2="45"/>
+            <line x1="70" y1="45" x2="90" y2="45"/>
+            <polygon points="46,41 46,49 50,45" class="fill"/>
+            <polygon points="86,41 86,49 90,45" class="fill"/>
+            <circle cx="60" cy="22" r="5" class="soft"/>
+            <circle cx="20" cy="70" r="4" class="soft"/>
+            <line x1="60" y1="27" x2="60" y2="38" class="soft"/>
+            <line x1="20" y1="52" x2="20" y2="66" class="soft"/>
+          </svg>
+        </div>
+        <div class="pidx">07 / VIII</div>
+        <h3>DR Forge</h3>
+        <div class="code">Workflow Intervention</div>
+        <div class="desc">企业生产与运营工作流的 AI 介入中台。按节点插入 AI 能力（质检、分类、生成、审核），不破坏原有系统结构——温柔而有力的数字化转型。</div>
+      </div>
+
+      <!-- DR Matrix -->
+      <div class="product-card reveal">
+        <div class="art">
+          <svg viewBox="0 0 120 90">
+            <circle cx="25" cy="25" r="6"/>
+            <circle class="fill" cx="60" cy="25" r="6"/>
+            <circle cx="95" cy="25" r="6"/>
+            <circle class="fill" cx="25" cy="45" r="6"/>
+            <circle cx="60" cy="45" r="6"/>
+            <circle cx="95" cy="45" r="6"/>
+            <circle cx="25" cy="65" r="6"/>
+            <circle cx="60" cy="65" r="6"/>
+            <circle class="fill" cx="95" cy="65" r="6"/>
+            <line x1="25" y1="31" x2="25" y2="39" class="soft"/>
+            <line x1="60" y1="31" x2="60" y2="39" class="soft"/>
+            <line x1="95" y1="31" x2="95" y2="39" class="soft"/>
+            <line x1="25" y1="51" x2="25" y2="59" class="soft"/>
+            <line x1="60" y1="51" x2="60" y2="59" class="soft"/>
+            <line x1="95" y1="51" x2="95" y2="59" class="soft"/>
+          </svg>
+        </div>
+        <div class="pidx">08 / VIII</div>
+        <h3>DR Matrix</h3>
+        <div class="code">Social Operations</div>
+        <div class="desc">多平台、多账号矩阵运营管理系统。统一发布、统一监测，含推流数据分析与爆款内容归因——让矩阵号从"乱"走向"序"。</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════ 04 PATHWAY ══════ -->
+<section id="pathway" style="background: var(--cream-soft);">
+  <div class="container">
+    <div class="section-head">
+      <div class="num">04<small>Entry & Expansion</small></div>
+      <div>
+        <h2>从一次<em>对话</em>，<br>到一条长路。</h2>
+        <p class="eyebrow">AI 咨询不是独立业务线，而是进入企业的战略入口。DigiRepub 以此为起点，逐步延展到内容、营销、数字化等更广阔的合作边界。</p>
+      </div>
+    </div>
+
+    <div class="pathway-visual reveal">
+      <svg viewBox="0 0 900 260" xmlns="http://www.w3.org/2000/svg" id="pathwayVisual">
+        <path class="path-line" id="pathLine" d="M 100 130 C 280 50, 380 50, 450 130 S 620 210, 800 130"/>
+        <g data-phase="1">
+          <circle class="node" cx="100" cy="130" r="36"/>
+          <text x="100" y="138">i</text>
+          <text class="label" x="100" y="200">Phase 01</text>
+          <text class="title" x="100" y="225">切入</text>
+        </g>
+        <g data-phase="2">
+          <circle class="node" cx="450" cy="130" r="36"/>
+          <text x="450" y="138">ii</text>
+          <text class="label" x="450" y="200">Phase 02</text>
+          <text class="title" x="450" y="225">深耕</text>
+        </g>
+        <g data-phase="3">
+          <circle class="node" cx="800" cy="130" r="36"/>
+          <text x="800" y="138">iii</text>
+          <text class="label" x="800" y="200">Phase 03</text>
+          <text class="title" x="800" y="225">延展</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="pathway-desc">
+      <p>以 AI 咨询（员工培训 / 业务咨询）作为低门槛、高价值的切入点，建立与企业的信任关系。</p>
+      <p>以某条 DR 产品线落地为抓手，深入了解企业运营，识别更多合作机会。</p>
+      <p>自然延伸至营销业务、内容生产、数字化项目、长期顾问合作——单客户价值呈指数级增长。</p>
+    </div>
+
+    <div class="case" style="margin-top: 80px;">
+      <div class="cap">Case · 从培训到全年营销中台</div>
+      <div class="title">某快消集团单客户演进路径</div>
+      <div class="body">
+        <span class="hi">Step 1</span> 一场"AI 工具工作坊" →
+        <span class="hi">Step 2</span> DR Context 搭建品牌专属上下文 →
+        <span class="hi">Step 3</span> DRart + DRvideo 承接双十一全量营销素材 →
+        <span class="hi">Step 4</span> DR Matrix 接管 12 个社媒账号的日常运营。<br><br>
+        年合作规模从培训项目扩展到 <span class="hi">全年营销中台合作</span>。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ 05 ECOSYSTEM ══════ -->
+<section id="ecosystem">
+  <div class="container">
+    <div class="section-head">
+      <div class="num">05<small>Resource Ecosystem</small></div>
+      <div>
+        <h2>一张网，<br><em>通天彻地</em>。</h2>
+        <p class="eyebrow">差异化优势不仅在于自研产品，更在于构建了一张可调用的 AI 业界资源网络——大厂、小模型、创业团队、行业专家，随时汇入。</p>
+      </div>
+    </div>
+
+    <div class="eco-map reveal">
+      <svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" id="ecoMap">
+        <g id="ecoLines">
+          <line x1="450" y1="260" x2="200" y2="120"/>
+          <line x1="450" y1="260" x2="700" y2="120"/>
+          <line x1="450" y1="260" x2="120" y2="400"/>
+          <line x1="450" y1="260" x2="780" y2="400"/>
+          <line x1="450" y1="260" x2="450" y2="60"/>
+          <line x1="450" y1="260" x2="450" y2="470"/>
+        </g>
+
+        <circle class="eco-center" cx="450" cy="260" r="20"/>
+        <text class="center" x="450" y="310">DigiRepub</text>
+        <text class="sub" x="450" y="330">· Connector ·</text>
+
+        <circle class="eco-dot" cx="200" cy="120" r="6"/>
+        <text x="200" y="100">通义千问</text>
+        <text class="sub" x="200" y="85">AI 大厂</text>
+
+        <circle class="eco-dot" cx="700" cy="120" r="6"/>
+        <text x="700" y="100">字节豆包</text>
+        <text class="sub" x="700" y="85">AI 大厂</text>
+
+        <circle class="eco-dot" cx="450" cy="60" r="6"/>
+        <text x="450" y="40">腾讯混元</text>
+        <text class="sub" x="450" y="25">AI 大厂</text>
+
+        <circle class="eco-dot" cx="120" cy="400" r="6"/>
+        <text x="120" y="430">垂类小模型</text>
+        <text class="sub" x="120" y="450">商用供应商</text>
+
+        <circle class="eco-dot" cx="780" cy="400" r="6"/>
+        <text x="780" y="430">AI 创业团队</text>
+        <text class="sub" x="780" y="450">垂直赛道</text>
+
+        <circle class="eco-dot" cx="450" cy="470" r="6"/>
+        <text x="450" y="495">行业专家 · 数据方</text>
+        <text class="sub" x="450" y="512">跨界资源</text>
+      </svg>
+    </div>
+
+    <div class="case" style="margin-top: 40px;">
+      <div class="cap">Case · 金融合规文档审核</div>
+      <div class="title">以大厂 1/5 的成本完成部署</div>
+      <div class="body">某金融客户需要合规文档自动审核，通用大模型成本过高且合规风险不可控。DigiRepub 通过生态网络迅速对接一家<span class="hi">垂直金融小模型</span>创业团队，叠加 DR Forge 作为工作流底座——以大厂 <span class="hi">1/5 的成本</span>完成部署，<span class="hi">数据不出私有云</span>。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ 06 PILLARS ══════ -->
+<section id="competitiveness" style="background: var(--cream-soft);">
+  <div class="container">
+    <div class="section-head">
+      <div class="num">06<small>Core Competitiveness</small></div>
+      <div>
+        <h2>三根柱子，<br>撑起<em>整座殿</em>。</h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="pillars">
+    <div class="pillar reveal">
+      <svg class="glyph" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="38"/>
+        <circle cx="50" cy="50" r="24"/>
+        <circle class="fill" cx="50" cy="50" r="6"/>
+        <line x1="50" y1="6" x2="50" y2="18"/>
+        <line x1="50" y1="82" x2="50" y2="94"/>
+        <line x1="6" y1="50" x2="18" y2="50"/>
+        <line x1="82" y1="50" x2="94" y2="50"/>
+      </svg>
+      <h4>AI 产品研发力</h4>
+      <p>8 条已落地的 DR 系列产品线是最直接的能力证明，从内容生成到数据治理到工作流全覆盖。</p>
+    </div>
+
+    <div class="pillar reveal">
+      <svg class="glyph" viewBox="0 0 100 100">
+        <circle cx="30" cy="50" r="20"/>
+        <circle cx="50" cy="50" r="28"/>
+        <circle cx="70" cy="50" r="20"/>
+        <circle class="fill" cx="50" cy="50" r="3"/>
+      </svg>
+      <h4>模型全谱系理解</h4>
+      <p>从大厂大模型到商用小模型、开源微调模型，都有真实场景的落地经验——为客户匹配最合适而非最贵。</p>
+    </div>
+
+    <div class="pillar reveal">
+      <svg class="glyph" viewBox="0 0 100 100">
+        <circle class="fill" cx="50" cy="50" r="4"/>
+        <circle cx="50" cy="20" r="4"/>
+        <circle cx="76" cy="35" r="4"/>
+        <circle cx="76" cy="65" r="4"/>
+        <circle cx="50" cy="80" r="4"/>
+        <circle cx="24" cy="65" r="4"/>
+        <circle cx="24" cy="35" r="4"/>
+        <line x1="50" y1="50" x2="50" y2="20"/>
+        <line x1="50" y1="50" x2="76" y2="35"/>
+        <line x1="50" y1="50" x2="76" y2="65"/>
+        <line x1="50" y1="50" x2="50" y2="80"/>
+        <line x1="50" y1="50" x2="24" y2="65"/>
+        <line x1="50" y1="50" x2="24" y2="35"/>
+      </svg>
+      <h4>业界资源网络</h4>
+      <p>大厂与创业团队的双向连接，让 DigiRepub 能为客户找到"最合适"而非"最知名"的方案。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ 07 DELIVERY ══════ -->
+<section id="delivery">
+  <div class="container-narrow">
+    <div class="section-head">
+      <div class="num">07<small>Service Delivery</small></div>
+      <div>
+        <h2>六种<em>相遇</em><br>方式。</h2>
+      </div>
+    </div>
+
+    <table class="editorial">
+      <thead>
+        <tr><th>服务形式</th><th>交付内容</th><th>计费</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>AI 工具培训</td><td>工作坊（DRart / DRvideo 等）、场景化课程、员工答疑陪跑</td><td>按场次 / 人头</td></tr>
+        <tr><td>AI 战略咨询</td><td>业务诊断报告、AI 适配评估、选型建议</td><td>按项目</td></tr>
+        <tr><td>DR 系统落地</td><td>DR Forge / Matrix / Nexus 等产品部署与定制</td><td>实施 + 订阅</td></tr>
+        <tr><td>长期顾问</td><td>月度 / 季度持续陪跑、方案迭代、效果复盘</td><td>按月 / 年订阅</td></tr>
+        <tr><td>资源撮合</td><td>垂直 AI 能力对接、厂商筛选、合同协助</td><td>撮合 + 分成</td></tr>
+        <tr><td>衍生业务</td><td>营销、内容生产、数字化项目等扩展业务</td><td>按原模式</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══════ CLOSING ══════ -->
+<section class="closing">
+  <div class="cap">— Fin. —</div>
+  <h2>大道<em>至合</em>。</h2>
+
+  <svg class="closing-logo" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+    <circle class="ring" cx="80" cy="70" r="44"/>
+    <circle class="ring" cx="120" cy="70" r="44"/>
+    <circle class="dot" cx="100" cy="70" r="3"/>
+  </svg>
+
+  <div class="sig">DigiRepub · 大合  ·  AI Strategy · Products · Ecosystem  ·  MMXXVI</div>
+</section>
+
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+
+  // detect mobile / reduced motion
+  const isMobile = window.matchMedia('(max-width: 900px)').matches;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ── Lenis smooth scroll (disabled on mobile for native feel) ──
+  if (!isMobile && !reduceMotion) {
+    const lenis = new Lenis({ duration: 1.15, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((t) => lenis.raf(t * 1000));
+    gsap.ticker.lagSmoothing(0);
+  }
+
+  // ── progress bar ──
+  const progressEl = document.getElementById('progress');
+  ScrollTrigger.create({
+    trigger: document.body, start: 'top top', end: 'bottom bottom',
+    onUpdate: (s) => progressEl.style.width = (s.progress * 100) + '%',
+  });
+
+  // ── HERO title letter stagger ──
+  if (!reduceMotion) {
+    gsap.from('#heroTitle .char', {
+      y: '100%', opacity: 0, duration: 1.1, ease: 'power4.out', stagger: 0.05, delay: 0.3
+    });
+  }
+
+  // ── HERO art reveal ──
+  if (!reduceMotion) {
+    gsap.from('#hero-orbits circle', { scale: 0.88, opacity: 0, transformOrigin: '50% 50%', duration: 1.5, ease: 'power4.out', stagger: 0.08, delay: 0.4 });
+    gsap.from('#hero-vesica', { opacity: 0, duration: 1.5, ease: 'power4.out', delay: 1.2 });
+    gsap.from('#hero-ticks line', { opacity: 0, duration: 0.6, stagger: 0.05, delay: 1.4 });
+
+    // subtle rotation of concentric orbits
+    gsap.to('#hero-orbits', {
+      rotation: 360,
+      transformOrigin: '50% 50%',
+      duration: 180,
+      ease: 'none',
+      repeat: -1,
+    });
+  }
+
+  // ── Parallax: hero art drifts on scroll (desktop only) ──
+  if (!isMobile && !reduceMotion) {
+    gsap.to('.hero-art', {
+      y: 120, rotation: 8, ease: 'none',
+      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
+    });
+  }
+
+  // ── Manifesto word-by-word light up ──
+  ScrollTrigger.create({
+    trigger: '#manifesto',
+    start: 'top 75%',
+    end: 'bottom 40%',
+    scrub: 0.5,
+    onUpdate: (self) => {
+      const words = document.querySelectorAll('#manifesto .word');
+      const count = Math.floor(self.progress * words.length * 1.15);
+      words.forEach((w, i) => w.classList.toggle('lit', i <= count));
+    }
+  });
+
+  // ── Generic reveal ──
+  gsap.utils.toArray('.reveal').forEach((el) => {
+    gsap.to(el, {
+      opacity: 1, y: 0, duration: 0.9, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 88%' }
+    });
+  });
+
+  // ── Section head ──
+  gsap.utils.toArray('.section-head').forEach((head) => {
+    gsap.from(head.querySelector('.num'), {
+      y: 40, opacity: 0, duration: 1, ease: 'power3.out',
+      scrollTrigger: { trigger: head, start: 'top 82%' }
+    });
+    gsap.from(head.querySelector('h2'), {
+      y: 50, opacity: 0, duration: 1.1, ease: 'power3.out', delay: 0.15,
+      scrollTrigger: { trigger: head, start: 'top 82%' }
+    });
+    const eyebrow = head.querySelector('.eyebrow');
+    if (eyebrow) gsap.from(eyebrow, {
+      y: 26, opacity: 0, duration: 0.9, ease: 'power3.out', delay: 0.3,
+      scrollTrigger: { trigger: head, start: 'top 82%' }
+    });
+  });
+
+  // ── Architecture visual: vesica draws in ──
+  ScrollTrigger.create({
+    trigger: '#archVisual',
+    start: 'top 75%',
+    once: true,
+    onEnter: () => {
+      gsap.from('#archVisual circle', {
+        scale: 0, opacity: 0, transformOrigin: '50% 50%',
+        duration: 1.2, ease: 'power3.out', stagger: 0.15,
+      });
+      gsap.from('#archVisual text', { opacity: 0, y: 10, duration: 0.6, stagger: 0.08, delay: 0.6 });
+    }
+  });
+
+  // ── Pathway: path draws in + nodes fill sequentially ──
+  const pathLine = document.getElementById('pathLine');
+  if (pathLine) {
+    const len = pathLine.getTotalLength();
+    pathLine.style.strokeDasharray = len;
+    pathLine.style.strokeDashoffset = len;
+  }
+
+  ScrollTrigger.create({
+    trigger: '#pathwayVisual',
+    start: 'top 75%',
+    once: true,
+    onEnter: () => {
+      if (pathLine) gsap.to(pathLine, { strokeDashoffset: 0, duration: 2, ease: 'power2.inOut' });
+
+      document.querySelectorAll('#pathwayVisual g[data-phase]').forEach((g, i) => {
+        gsap.delayedCall(0.4 + i * 0.45, () => {
+          const node = g.querySelector('circle.node');
+          const num = g.querySelector('text');
+          node.classList.add('filled');
+          num.classList.add('filled');
+        });
+      });
+
+      gsap.from('#pathwayVisual g[data-phase]', {
+        opacity: 0, y: 20, duration: 0.7, stagger: 0.12, delay: 0.3, ease: 'power3.out'
+      });
+    }
+  });
+
+  // ── Ecosystem: lines draw + nodes pop ──
+  const ecoLines = document.querySelectorAll('#ecoLines line');
+  ecoLines.forEach(line => {
+    const len = line.getTotalLength();
+    line.style.strokeDasharray = len;
+    line.style.strokeDashoffset = len;
+  });
+  ScrollTrigger.create({
+    trigger: '#ecoMap',
+    start: 'top 75%',
+    once: true,
+    onEnter: () => {
+      gsap.to('#ecoLines line', {
+        strokeDashoffset: 0, duration: 1.6, stagger: 0.1, ease: 'power2.inOut'
+      });
+      gsap.from('#ecoMap circle.eco-dot, #ecoMap circle.eco-center', {
+        scale: 0, opacity: 0, transformOrigin: '50% 50%',
+        duration: 0.8, stagger: 0.08, ease: 'back.out(1.6)', delay: 0.3
+      });
+      gsap.from('#ecoMap text', {
+        opacity: 0, y: 8, duration: 0.6, stagger: 0.05, delay: 0.6
+      });
+    }
+  });
+
+  // ── Product card art: tiny idle animation on hover ──
+  document.querySelectorAll('.product-card').forEach((card) => {
+    const fills = card.querySelectorAll('.art .fill');
+    card.addEventListener('mouseenter', () => {
+      if (reduceMotion) return;
+      gsap.fromTo(fills, { scale: 1 }, { scale: 1.6, duration: 0.4, yoyo: true, repeat: 1, transformOrigin: '50% 50%', ease: 'power2.inOut' });
+    });
+  });
+
+  // ── Closing logo breath ──
+  if (!reduceMotion) {
+    gsap.to('.closing-logo', {
+      scale: 1.04, duration: 3, ease: 'sine.inOut', repeat: -1, yoyo: true, transformOrigin: 'center',
+    });
+  }
+</script>
+
+</body>
+</html>
