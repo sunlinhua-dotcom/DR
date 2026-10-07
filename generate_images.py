@@ -3,7 +3,7 @@ from google import genai
 from PIL import Image
 import os, io
 
-API_KEY = "***REMOVED***"
+API_KEY = os.environ["APIYI_API_KEY"]
 MODEL = "gemini-3.1-flash-image-preview"
 
 client = genai.Client(
